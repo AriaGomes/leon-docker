@@ -58,11 +58,13 @@ ENV PATH="${PYTHON_BIN_PATH}:${PATH}"
 RUN python -m pip install --user --force-reinstall pipenv virtualenv
 
 # Install Leon
-WORKDIR /home/docker/leon
+RUN npm install --global @leon-ai/cli
+RUN leon create birth --path /home/docker/leon
+WORKDIR /home/docker/leon 
 USER root
 RUN chown -R docker /home/docker/leon
 USER docker
-COPY --chown=docker ./ ./
+
 RUN npm install
 RUN npm run build
 
