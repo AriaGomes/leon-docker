@@ -28,7 +28,8 @@ RUN apt-get update && apt-get install --yes -q --no-install-recommends \
   tk-dev libxml2-dev  \
   libxmlsec1-dev  \
   libffi-dev  \
-  liblzma-dev
+  liblzma-dev 
+  
 
 # Run the container as an unprivileged user
 RUN groupadd docker && useradd -g docker -s /bin/bash -m docker
@@ -61,15 +62,10 @@ RUN python -m pip install --user --force-reinstall pipenv virtualenv
 
 # Install Leon
 USER root
-RUN npm install --global @leon-ai/cli
-RUN leon create birth --path /home/docker/leon
-WORKDIR /home/docker/leon
-COPY ./package.json /home/docker/leon
-RUN chown -R docker /home/docker/leon
+RUN chown -R docker /home/docker
 USER docker
+COPY --chown=docker ./ ./
+RUN chmod -R 777 /home/docker
 EXPOSE 1337
-VOLUME [ "/home/docker/leon" ]
-RUN npm install
-RUN npm run build
 
-CMD ["npm", "start"]
+CMD ["./leonStart.sh"]
