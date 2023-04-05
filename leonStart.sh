@@ -13,6 +13,5 @@ chmod -R 777 leon
 # Install leon and start
 cd leon
 yarn
-yarn check
 yarn build
 yarn start
